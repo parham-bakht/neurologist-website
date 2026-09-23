@@ -1,0 +1,278 @@
+/* Shared visual foundations and public homepage refinements. */
+:root {
+  --navy:#183c4b;
+  --blue:#247b81;
+  --blue-dark:#196269;
+  --mint:#edf7f4;
+  --muted:#617580;
+  --line:#dce8e8;
+  --shadow-soft:0 8px 28px #183c4b08;
+}
+body { background:#f7faf9; line-height:1.75; }
+button,input,textarea,select { font:inherit; }
+button,.button { font-weight:650; line-height:1.6; }
+button:disabled { cursor:wait; opacity:.6; transform:none; }
+button:not(:disabled):active,.button:active { transform:translateY(0); }
+a,button,input,textarea,select,summary { -webkit-tap-highlight-color:transparent; }
+:where(a,button,summary):focus-visible { outline:3px solid #319b92; outline-offset:4px; }
+input,select { min-height:48px; }
+input,textarea,select { transition:border-color .18s,box-shadow .18s; }
+:where(input,textarea,select):focus { outline:none; border-color:#368c87; box-shadow:0 0 0 3px #368c871a; }
+input::placeholder,textarea::placeholder { color:#7e9097; opacity:1; font-weight:400; }
+input[type="checkbox"],input[type="radio"] { min-height:auto; accent-color:var(--blue); }
+input[type="file"]::file-selector-button { margin-inline-end:.75rem; padding:.55rem .8rem; border:1px solid var(--line); border-radius:8px; background:var(--mint); color:var(--blue-dark); font:inherit; cursor:pointer; }
+main { min-width:0; }
+main :where(h1,h2,h3,p,a,strong,span,small) { overflow-wrap:break-word; }
+main :where(h1,h2,h3) { letter-spacing:0; }
+main :where(h1,h2) { text-wrap:pretty; }
+main :where(form,section,article,header) { min-width:0; }
+.eyebrow,.article-meta,.status,.stats span { letter-spacing:0; }
+.success,.error { margin:0; border:1px solid; line-height:1.8; font-size:.88rem; }
+.success { border-color:#bce6d2; }
+.error { border-color:#f6d1cc; }
+.card { border:1px solid var(--line); box-shadow:var(--shadow-soft); }
+.secondary:hover { color:var(--blue-dark); background:#edf7f4; border-color:#9dc8c1; }
+#main-content:focus { outline:none; }
+.skip-link { position:fixed; z-index:100; top:1rem; right:1rem; transform:translateY(-180%); padding:.7rem 1rem; border-radius:10px; background:var(--navy); color:white; }
+.skip-link:focus { transform:translateY(0); }
+.mobile-brand-header { display:none; }
+nav { box-shadow:0 4px 20px #17324d04; }
+.brand { flex-shrink:0; }
+.brand-logo { border:0; background:transparent; box-shadow:none; width:46px; height:46px; }
+.doctor-brand-copy strong { font-size:.94rem; }
+.doctor-brand-copy small { font-size:.68rem; }
+.navlinks { gap:.2rem; }
+.navlinks>.nav-item { white-space:nowrap; font-weight:600; }
+.navlinks>.nav-item[aria-current] { color:var(--blue-dark); background:#e8f3f0; box-shadow:none; }
+.navlinks>.signup-link[aria-current] { color:white; background:var(--blue-dark); }
+.profile-popover { right:auto; left:0; box-shadow:0 16px 45px #183c4b18; }
+.profile-menu summary { font-size:.85rem; }
+
+.premium-home { background:#fcfdfc; color:var(--navy); }
+.home-section,.premium-hero,.home-contact-wrap { max-width:1200px; }
+.home-section { padding-block:clamp(3.5rem,6.5vw,6rem); }
+.premium-home h2 { font-size:clamp(1.7rem,2.8vw,2.5rem); line-height:1.6; letter-spacing:0; }
+.premium-home p { line-height:1.95; }
+.home-kicker { font-size:.77rem; letter-spacing:0; }
+.home-section-heading { margin-bottom:2rem; }
+.home-section-heading>p { font-size:.9rem; }
+.premium-hero { min-height:650px; padding-block:4.5rem; gap:4rem; grid-template-columns:minmax(300px,.8fr) minmax(0,1.2fr); }
+.premium-hero h1 { font-size:clamp(2.3rem,3.65vw,3.5rem); line-height:1.55; letter-spacing:0; margin:.9rem 0 1.4rem; }
+.premium-hero::before { opacity:.55; }
+.premium-hero-visual { max-width:410px; justify-self:start; }
+.hero-logo-showcase { box-shadow:0 18px 50px #17324d08,inset 0 0 0 14px #ffffff72; }
+.doctor-intro { flex-wrap:wrap; }
+.home-lead { font-size:.98rem; }
+.home-actions { margin:1.7rem 0; }
+.primary-cta { background:#247b81; box-shadow:0 6px 18px #247b8119; }
+.primary-cta:hover { background:#196269; }
+.quiet-button { border-color:#cbdddf; }
+.hero-trust { gap:.7rem 1rem; }
+.hero-trust span { font-size:.73rem; }
+.services-section { isolation:isolate; }
+.services-section::before { z-index:-1; inset:0 -100vw; background:#f1f7f5; }
+.services-grid { gap:1rem; }
+.services-grid article { min-height:185px; border-color:#dae7e4; background:white; border-radius:18px; padding:1.35rem; box-shadow:0 3px 12px #183c4b03; }
+.services-grid h3 { font-size:1rem; }
+.services-grid p { font-size:.86rem; }
+.line-icon { width:44px; height:44px; border-radius:13px; }
+.symptom-cards-section { position:relative; isolation:isolate; }
+.symptom-cards-section::before { content:""; position:absolute; z-index:-1; inset:0 -100vw; background:#f1f7f5; }
+.symptom-card-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1rem; }
+.symptom-card-grid article { min-height:132px; display:flex; flex-direction:column; align-items:flex-start; gap:1rem; padding:1.35rem; border:1px solid #dae7e4; border-radius:18px; background:#fff; box-shadow:0 3px 12px #183c4b03; transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease; }
+.symptom-card-grid article:hover { transform:translateY(-3px); border-color:#a8cbd0; box-shadow:0 18px 40px #17324d0d; }
+.symptom-card-grid h3 { margin:0; color:var(--navy); font-size:.95rem; line-height:1.8; }
+.symptom-cards-action { margin-top:1.5rem; }
+.symptom-section,.portal-section { gap:clamp(2.5rem,6vw,5rem); }
+.calm-medical-visual { min-height:450px; border:1px solid #deece6; background:#f0f7f3; }
+.doctor-photo-placeholder { background:linear-gradient(145deg,#edf6f3,#e5f0ef); }
+.doctor-photo-placeholder>span { color:var(--navy); font-size:1.16rem; }
+.doctor-photo-placeholder>small { color:#4c7276; font-size:.83rem; }
+.doctor-photo-mark img { opacity:1; }
+.about-section { display:grid; grid-template-columns:1fr; align-items:start; gap:1.6rem; }
+.about-intro { max-width:740px; }
+.about-intro h2 { margin-bottom:.35rem; }
+.about-intro>p:last-child { margin:0; color:#60777e; font-size:.88rem; }
+.doctor-profile-card { display:grid; grid-template-columns:200px minmax(0,1fr); grid-template-areas:"photo identity" "photo bio" "photo facts" "photo highlights"; column-gap:1.6rem; row-gap:1rem; overflow:hidden; margin:0; padding:1.4rem; border:1px solid #d8e6e3; border-radius:24px; background:linear-gradient(135deg,#fff 60%,#f3f8f6); box-shadow:0 14px 42px #183c4b0b; }
+.doctor-profile-image { position:relative; grid-area:photo; width:200px; align-self:stretch; min-height:270px; overflow:hidden; border-radius:18px; background:#eaf2f0; }
+.doctor-profile-image::after { content:""; position:absolute; inset:0; border:1px solid #ffffff7a; border-radius:inherit; pointer-events:none; }
+.doctor-profile-image img { object-fit:cover; object-position:center 18%; }
+.doctor-profile-identity { grid-area:identity; display:flex; align-items:flex-start; justify-content:space-between; gap:1.25rem; padding-bottom:.9rem; border-bottom:1px solid #e3ece9; }
+.doctor-profile-label { display:block; margin-bottom:.2rem; color:#38847d; font-size:.66rem; font-weight:750; }
+.doctor-profile-identity h3 { margin:0; color:var(--navy); font-size:1.32rem; line-height:1.6; }
+.doctor-profile-identity p { margin:.05rem 0 0; color:#477078; font-size:.82rem; line-height:1.7; }
+.doctor-profile-experience { display:none; }
+.doctor-profile-experience strong { color:#1e6f6c; font-size:.86rem; }
+.doctor-profile-bio { grid-area:bio; margin:0; color:#425f68; font-size:.88rem; line-height:2; }
+.doctor-profile-facts { grid-area:facts; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.7rem; margin:0; }
+.doctor-profile-facts>div { padding:.75rem .85rem; border:1px solid #dce9e6; border-radius:13px; background:#fff; }
+.doctor-profile-facts dt { display:flex; align-items:center; gap:.4rem; margin-bottom:.15rem; color:#698087; font-size:.65rem; font-weight:650; }
+.doctor-profile-facts dt svg { width:16px; height:16px; color:#31847c; }
+.doctor-profile-facts dd { margin:0; color:#244b56; font-size:.77rem; font-weight:700; }
+.doctor-profile-highlights { grid-area:highlights; display:flex; flex-wrap:wrap; gap:.45rem .9rem; padding-top:.15rem; }
+.doctor-profile-highlights span { display:flex; align-items:center; gap:.35rem; color:#526e75; font-size:.71rem; }
+.doctor-profile-highlights svg { width:15px; height:15px; color:#31877d; }
+.process-section { max-width:1240px; background:#183f4a; padding:clamp(2rem,5vw,4rem); box-shadow:none; border-radius:26px; }
+.process-steps article>span { background:#183f4a; }
+.process-steps h3 { font-size:1rem; }
+.process-steps p { font-size:.86rem; }
+.process-steps { margin-top:2.5rem; }
+.portal-preview { transform:none; box-shadow:0 16px 45px #183c4b0d; border-radius:22px; }
+.portal-preview-bar { background:#183f4a; }
+.preview-example { margin:.7rem 0 0; color:var(--muted); text-align:center; font-size:.7rem; }
+.portal-capabilities small { font-size:.8rem; }
+.premium-article-card { box-shadow:var(--shadow-soft); }
+.premium-article-card p { font-size:.86rem; }
+.premium-article-card time { font-size:.73rem; }
+.premium-article-card strong { font-size:.81rem; }
+.faq-list { border:0; display:grid; gap:.7rem; }
+.faq-list details { border:1px solid var(--line); border-radius:14px; background:white; padding-inline:1.1rem; }
+.faq-list details[open] { border-color:#9bc5bf; background:#f6fbf9; }
+.faq-list summary { padding-block:1rem; font-size:.92rem; }
+.faq-list details p { margin:0 0 1.1rem; font-size:.87rem; }
+.premium-contact-section { background:#183f4a; box-shadow:none; }
+.premium-contact-section .contact-copy h2 { font-size:clamp(1.8rem,2.8vw,2.5rem); line-height:1.6; }
+.premium-contact-section .contact-form { scroll-margin-top:90px; box-shadow:0 12px 30px #0b26331a; }
+.premium-contact-section label { font-size:.87rem; }
+.contact-form textarea { min-height:130px; }
+.contact-form-heading { margin-bottom:.25rem; }
+.contact-form-heading h3 { margin:0 0 .25rem; font-size:1.1rem; }
+.contact-form-heading p { margin:0; font-size:.78rem; }
+.contact-form-fields { display:grid; gap:1rem; scroll-margin-top:1rem; }
+.contact-form .form-disclaimer { font-size:.73rem; }
+.home-footer { background:#14333e; }
+.footer-main { gap:2.5rem; padding-bottom:2.5rem; }
+.footer-main a,.footer-main span { font-size:.82rem; }
+.footer-brand p { font-size:.83rem; }
+.footer-main .footer-consultation { color:#c1e9df; border-bottom:1px solid #6ca397; padding-bottom:.25rem; }
+.footer-bottom span { font-size:.75rem; }
+@media(max-width:1100px) {
+  .public-site-nav { padding-inline:1.25rem; }
+  .public-site-nav .public-anchor { display:none; }
+  .premium-hero { gap:2.5rem; }
+  .symptom-card-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:850px) {
+  .premium-hero { grid-template-columns:1fr; min-height:auto; padding-block:3rem; }
+  .premium-hero-copy { max-width:none; }
+  .premium-hero-visual { width:280px; justify-self:center; }
+  .hero-logo-showcase { width:100%; }
+  .premium-article-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .premium-article-card:last-child { display:block; }
+  .premium-article-card:last-child:nth-child(odd) { grid-column:1/-1; }
+  .calm-medical-visual { min-height:350px; }
+}
+@media(max-width:700px) {
+  body { padding-bottom:calc(96px + env(safe-area-inset-bottom)); }
+  input,textarea,select { font-size:16px; }
+  main { padding:1.75rem 1rem; }
+  .mobile-brand-header { display:flex; align-items:center; justify-content:space-between; gap:.65rem; padding:.85rem 1rem; border-bottom:1px solid var(--line); background:#fff; }
+  .mobile-brand-header .brand { gap:.5rem; }
+  .mobile-brand-header .brand-logo { width:38px; height:38px; }
+  .mobile-brand-header .doctor-brand-copy strong { font-size:.8rem; }
+  .mobile-brand-header .doctor-brand-copy small { font-size:.6rem; }
+  nav.public-site-nav { padding-inline:.5rem; }
+  .navlinks>.nav-item { white-space:normal; }
+  .navlinks>.nav-item[aria-current] { color:#196269; background:#eef7f3; }
+  .navlinks>.signup-link[aria-current] { color:#196269; background:#eef7f3; }
+  .navlinks>.nav-item[aria-current] .nav-icon { color:#196269; }
+  .public-site-nav .navlinks.public-navlinks { grid-template-columns:repeat(5,minmax(0,1fr)); overflow:visible; }
+  .public-site-nav .mobile-about-link { display:flex; }
+  .public-site-nav .home-link { order:1; }
+  .public-site-nav .mobile-about-link { order:2; }
+  .public-site-nav .consultation-link { order:3; }
+  .public-site-nav .articles-link { order:4; }
+  .public-site-nav .login-link { order:5; }
+  .navlinks>.consultation-link,
+  .navlinks>.signup-link.consultation-link,
+  .navlinks>.consultation-link[aria-current] {
+    width:72px;
+    min-height:68px;
+    justify-self:center;
+    margin-top:-16px;
+    padding:.5rem .25rem;
+    overflow:visible;
+    border:4px solid #fff;
+    border-radius:20px;
+    color:#fff;
+    background:linear-gradient(145deg,#2d8b87,#17636a);
+    box-shadow:0 8px 22px #17636a45;
+    transform:none;
+  }
+  .navlinks>.consultation-link:hover,
+  .navlinks>.consultation-link:focus-visible { color:#fff; background:linear-gradient(145deg,#267f7b,#12565d); transform:translateY(-2px); }
+  .navlinks>.consultation-link::after { display:none; }
+  .navlinks>.consultation-link .nav-icon,
+  .navlinks>.consultation-link[aria-current] .nav-icon { width:25px; height:25px; color:#fff; }
+  .navlinks>.consultation-link>span:last-child { color:#fff; font-size:.61rem; line-height:1.3; }
+  .profile-popover { right:1rem; left:1rem; }
+  .premium-home { padding:0; }
+  .premium-hero { padding-block:2.25rem 3rem; gap:1.8rem; }
+  .premium-hero h1 { font-size:clamp(1.85rem,7.8vw,2.55rem); line-height:1.6; }
+  .premium-hero-visual { width:210px; align-self:center; }
+  .hero-logo-showcase { width:100%; }
+  .home-kicker { font-size:.7rem; }
+  .premium-home h2 { font-size:clamp(1.5rem,6.1vw,1.85rem); line-height:1.65; }
+  .home-section { padding-block:3rem; }
+  .home-lead { font-size:.91rem; }
+  .home-actions { gap:.65rem; margin-block:1.5rem; }
+  .home-actions .button { padding:.85rem; font-size:.87rem; }
+  .doctor-intro strong { font-size:.92rem; }
+  .hero-trust span { font-size:.74rem; }
+  .services-grid { gap:.7rem; }
+  .services-grid article,.services-grid .wide-service { min-height:0; padding:1.1rem; gap:.8rem; }
+  .services-grid h3 { font-size:.94rem; }
+  .services-grid p { font-size:.83rem; }
+  .symptom-card-grid { grid-template-columns:1fr; gap:.7rem; }
+  .symptom-card-grid article { min-height:118px; padding:1.1rem; gap:.8rem; }
+  .symptom-card-grid h3 { font-size:.9rem; }
+  .line-icon { width:38px; height:38px; border-radius:11px; }
+  .line-icon svg { width:21px; height:21px; }
+  .symptom-section,.portal-section { gap:1.75rem; }
+  .calm-medical-visual { min-height:230px; padding:1.5rem; }
+  .neural-orbit { width:130px; }
+  .calm-medical-visual>p { margin-top:1.6rem; }
+  .symptom-cards-action .button { width:100%; text-align:center; }
+  .about-section { gap:1.2rem; }
+  .about-intro>p:last-child { font-size:.8rem; }
+  .doctor-profile-card { grid-template-columns:96px minmax(0,1fr); grid-template-areas:"photo identity" "bio bio" "facts facts" "highlights highlights"; column-gap:.9rem; row-gap:.9rem; padding:1rem; border-radius:20px; box-shadow:0 10px 30px #183c4b09; }
+  .doctor-profile-image { width:96px; min-height:118px; align-self:start; border-radius:14px; }
+  .doctor-profile-identity { display:block; align-self:center; padding:0; border:0; }
+  .doctor-profile-label { font-size:.6rem; }
+  .doctor-profile-identity h3 { font-size:1rem; line-height:1.55; }
+  .doctor-profile-identity p { font-size:.68rem; }
+  .doctor-profile-experience { display:inline-flex; align-items:center; gap:.3rem; margin-top:.55rem; padding:.32rem .5rem; border:1px solid #cfe4df; border-radius:9px; color:#4f6f73; background:#edf7f4; font-size:.6rem; white-space:nowrap; }
+  .doctor-profile-experience strong { font-size:.72rem; }
+  .doctor-profile-bio { padding-top:.85rem; border-top:1px solid #e3ece9; font-size:.81rem; line-height:1.9; }
+  .doctor-profile-facts { grid-template-columns:1fr; gap:.5rem; }
+  .doctor-profile-facts>div { padding:.65rem .75rem; }
+  .doctor-profile-facts dd { font-size:.73rem; }
+  .doctor-profile-highlights { display:grid; gap:.4rem; }
+  .doctor-profile-highlights span { font-size:.69rem; }
+  .doctor-photo-placeholder.compact { min-height:245px; padding:1.5rem; border-radius:20px; }
+  .doctor-photo-mark { width:110px; margin-bottom:.75rem; }
+  .doctor-photo-placeholder>span { font-size:1rem; }
+  .medical-code-card { padding:.9rem 1rem; }
+  .process-section { padding:2.25rem 1.25rem; border-radius:20px; }
+  .process-steps { margin-top:1.7rem; }
+  .process-steps article:last-child { padding-bottom:0; }
+  .process-steps h3 { font-size:.95rem; }
+  .premium-article-grid { grid-template-columns:1fr; }
+  .premium-article-card:last-child:nth-child(odd) { grid-column:auto; }
+  .premium-article-card h3 { font-size:1rem; }
+  .faq-list details { padding-inline:.9rem; }
+  .faq-list summary { font-size:.88rem; }
+  .premium-contact-section { padding:2.75rem 1rem; }
+  .premium-contact-section .contact-copy h2 { font-size:1.65rem; }
+  .premium-contact-section .contact-form { scroll-margin-top:1rem; }
+  .home-contact-wrap { padding:0; }
+  .home-footer { padding:2.5rem 1rem 1.5rem; }
+  .footer-main { grid-template-columns:1fr 1fr; gap:1.75rem 1rem; }
+  .footer-brand { grid-column:1/-1; }
+  .footer-main>div:last-child { grid-column:1/-1; }
+  .footer-bottom { gap:.75rem; }
+}
+@media(prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto; }
+  *,*::before,*::after { animation:none!important; transition:none!important; }
+}

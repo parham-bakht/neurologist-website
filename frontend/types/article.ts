@@ -1,0 +1,61 @@
+export type ArticleStatus="draft"|"published"|"scheduled";
+export type ArticleMark={type:"bold"|"italic"|"underline"|"strike"|"code"|"link";attrs?:Record<string,string>};
+export type ArticleNode={
+  type:string;
+  text?:string;
+  attrs?:Record<string,string|number|boolean|null>;
+  marks?:ArticleMark[];
+  content?:ArticleNode[];
+};
+export type ArticleContent={type:"doc";content?:ArticleNode[]};
+export type ArticleCategory={id:string;name:string;slug:string};
+export type ArticleTag={id:string;name:string;slug:string};
+export type ArticleMedia={
+  id:string;
+  url:string;
+  storage_key:string;
+  media_type:"image"|"video";
+  mime_type:string;
+  original_name:string;
+  alt_text:string;
+  caption:string;
+  width:number|null;
+  height:number|null;
+  file_size:number;
+};
+export type ArticleAuthor={id:string;full_name:string;role:"doctor"|"admin"};
+export type Article={
+  id:string;
+  title:string;
+  slug:string;
+  excerpt:string;
+  content:ArticleContent;
+  featured_image_url:string|null;
+  social_image_url:string|null;
+  category:ArticleCategory|null;
+  tags:ArticleTag[];
+  author:ArticleAuthor;
+  status:ArticleStatus;
+  seo_title:string|null;
+  meta_description:string|null;
+  published_at:string|null;
+  scheduled_at:string|null;
+  created_at:string;
+  updated_at:string;
+  media:ArticleMedia[];
+};
+export type ArticleDraft={
+  title:string;
+  slug:string;
+  excerpt:string;
+  content:ArticleContent;
+  featured_image_url:string|null;
+  social_image_url:string|null;
+  category_id:string|null;
+  tag_ids:string[];
+  seo_title:string|null;
+  meta_description:string|null;
+  media_ids:string[];
+};
+
+export const EMPTY_ARTICLE_CONTENT:ArticleContent={type:"doc",content:[{type:"paragraph"}]};

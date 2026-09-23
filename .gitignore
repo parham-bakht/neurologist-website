@@ -1,0 +1,13 @@
+.env
+.env.local
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+node_modules/
+.next/
+.next-build/
+coverage/
+backend/uploads/
+*.stdout.log
+*.stderr.log
