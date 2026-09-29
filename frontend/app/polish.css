@@ -36,7 +36,7 @@ main :where(form,section,article,header) { min-width:0; }
 .skip-link { position:fixed; z-index:100; top:1rem; right:1rem; transform:translateY(-180%); padding:.7rem 1rem; border-radius:10px; background:var(--navy); color:white; }
 .skip-link:focus { transform:translateY(0); }
 .mobile-brand-header { display:none; }
-nav { box-shadow:0 4px 20px #17324d04; }
+.site-navigation { box-shadow:0 4px 20px #17324d04; }
 .brand { flex-shrink:0; }
 .brand-logo { border:0; background:transparent; box-shadow:none; width:46px; height:46px; }
 .doctor-brand-copy strong { font-size:.94rem; }

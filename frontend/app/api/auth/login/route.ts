@@ -20,6 +20,7 @@ export async function POST(request:Request){
   const data=await response.json();
   if(!response.ok)return NextResponse.json(data,{status:response.status});
   const result=isJson?NextResponse.json({ok:true}):NextResponse.redirect(new URL("/dashboard",request.url),303);
-  result.cookies.set("access_token",data.access_token,{httpOnly:true,sameSite:"lax",secure:process.env.NODE_ENV==="production",path:"/",maxAge:30*60});
+  const secureCookie=request.headers.get("x-forwarded-proto")==="https"||new URL(request.url).protocol==="https:";
+  result.cookies.set("access_token",data.access_token,{httpOnly:true,sameSite:"lax",secure:secureCookie,path:"/",maxAge:30*60});
   return result;
 }

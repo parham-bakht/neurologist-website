@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config import settings
 from app.routers import admin, articles, auth, contacts, patients, taxonomies, uploads, visits
@@ -22,7 +23,16 @@ async def lifespan(_app: FastAPI):
         await scheduler
 
 
-app = FastAPI(title="Pediatric Neurologist API", version="0.1.0", lifespan=lifespan)
+production = settings.environment.lower() == "production"
+app = FastAPI(
+    title="Pediatric Neurologist API",
+    version="0.1.0",
+    lifespan=lifespan,
+    docs_url=None if production else "/docs",
+    redoc_url=None if production else "/redoc",
+    openapi_url=None if production else "/openapi.json",
+)
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.allowed_hosts)
 app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origins, allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 app.include_router(auth.router, prefix="/api/v1")
 app.include_router(admin.router, prefix="/api/v1")

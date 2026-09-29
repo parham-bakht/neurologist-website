@@ -10,6 +10,8 @@ from app.security import hash_password
 async def ensure_main_manager() -> bool:
     """Create the configured main manager once; never overwrite an existing account."""
     email = settings.main_manager_email.strip().lower()
+    if not email or not settings.main_manager_password:
+        return False
     async with SessionLocal() as db:
         if await db.scalar(select(User.id).where(User.email == email)) is not None:
             return False

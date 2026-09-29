@@ -1,5 +1,7 @@
 # Pediatric Neurologist Website
 
+> The current containerized production guide is [DEPLOYMENT.md](DEPLOYMENT.md). It uses Docker Compose for Nginx, Next.js, FastAPI, and PostgreSQL. The older host-service notes below are retained only as historical/local-development reference.
+
 A Persian pediatric-neurology website and patient-management panel built with:
 
 - **Frontend:** Next.js 15 and React 19
@@ -235,8 +237,8 @@ DATABASE_URL=postgresql+asyncpg://neurologist:${DB_PASSWORD}@127.0.0.1:55432/neu
 JWT_SECRET=${JWT_SECRET}
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 CORS_ORIGINS='["https://example.com","https://www.example.com"]'
-MAIN_MANAGER_EMAIL=drmehrdadbakhtiari@gmail.com
-MAIN_MANAGER_PASSWORD=Dr@Mehrdad@Bakhtiari@1352
+MAIN_MANAGER_EMAIL=admin@example.com
+MAIN_MANAGER_PASSWORD=replace-with-a-strong-random-password
 MAIN_MANAGER_NAME='دکتر مهرداد بختیاری'
 EOF
 ```
@@ -525,7 +527,7 @@ Open `https://example.com` in a browser and test the home page, login, appointme
 
 When the backend starts, it checks for the email configured in `MAIN_MANAGER_EMAIL`. If that email does not exist, it creates the account once with the configured name and password, assigns the `admin` role, and marks it as the protected main manager. It never overwrites the password or role of an existing account.
 
-With the environment values from step 9, sign in with `drmehrdadbakhtiari@gmail.com` and the value of `MAIN_MANAGER_PASSWORD` at:
+With the environment values from step 9, sign in with `admin@example.com` and the value of `MAIN_MANAGER_PASSWORD` at:
 
 ```text
 https://example.com/login

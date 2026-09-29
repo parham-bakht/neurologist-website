@@ -56,12 +56,12 @@ export default function SiteNavigation({user}:{user:NavUser|null}){
   return <>
     <a className="skip-link" href="#main-content">رفتن به محتوای اصلی</a>
     <header className="mobile-brand-header"><Brand/></header>
-    <nav aria-label="ناوبری اصلی" className={user?"authenticated-nav":"public-site-nav"}>
+    <nav aria-label="ناوبری اصلی" className={`site-navigation ${user?"authenticated-nav":"public-site-nav"}`}>
       <Brand/>
       <div className={`navlinks ${isStaff?"staff-navlinks":""} ${!user?"public-navlinks":""}`}>
         {item("/","خانه","home","home-link")}
         {!user&&<>{item("/#about","درباره پزشک","account","public-anchor mobile-about-link")}{item("/#symptoms","علائم مهم",undefined,"public-anchor")}</>}
-        {!user?<>{item("/articles","مقالات","articles","articles-link desktop-articles-link")}{item("/#articles","مقالات","articles","articles-link mobile-articles-link")}</>:item("/articles","مقالات","articles","articles-link")}
+        {item("/articles","مقالات","articles","articles-link")}
         {!user&&item("/#faq","سوالات متداول",undefined,"public-anchor")}
         {user?<>
           {!isStaff&&item("/#consultation-fields","درخواست مشاوره","consultation","consultation-link")}

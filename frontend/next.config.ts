@@ -6,6 +6,7 @@ try{canonicalHost=configuredSiteUrl?new URL(configuredSiteUrl).hostname:""}catch
 const alternateHost=canonicalHost&&!canonicalHost.startsWith("www.")?`www.${canonicalHost}`:"";
 
 const nextConfig: NextConfig = {
+  output:"standalone",
   // Keep production builds from overwriting a running development server's files.
   distDir: process.env.NEXT_DIST_DIR || (process.env.NODE_ENV === "production" ? ".next-build" : ".next"),
   devIndicators: false,
