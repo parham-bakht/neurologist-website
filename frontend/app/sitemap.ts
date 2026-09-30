@@ -8,6 +8,7 @@ const backend=process.env.BACKEND_URL||"http://localhost:8000";
 export default async function sitemap():Promise<MetadataRoute.Sitemap>{
   const entries:MetadataRoute.Sitemap=[
     {url:absoluteUrl("/"),changeFrequency:"weekly",priority:1},
+    {url:absoluteUrl("/about"),changeFrequency:"monthly",priority:.8},
     {url:absoluteUrl("/articles"),changeFrequency:"weekly",priority:.8},
   ];
   try{

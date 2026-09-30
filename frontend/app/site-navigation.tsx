@@ -60,7 +60,7 @@ export default function SiteNavigation({user}:{user:NavUser|null}){
       <Brand/>
       <div className={`navlinks ${isStaff?"staff-navlinks":""} ${!user?"public-navlinks":""}`}>
         {item("/","خانه","home","home-link")}
-        {!user&&<>{item("/#about","درباره پزشک","account","public-anchor mobile-about-link")}{item("/#symptoms","علائم مهم",undefined,"public-anchor")}</>}
+        {!user&&<>{item("/about","درباره پزشک","account","public-anchor mobile-about-link")}{item("/#symptoms","علائم مهم",undefined,"public-anchor")}</>}
         {item("/articles","مقالات","articles","articles-link")}
         {!user&&item("/#faq","سوالات متداول",undefined,"public-anchor")}
         {user?<>
