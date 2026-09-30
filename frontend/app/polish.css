@@ -104,7 +104,7 @@ main :where(form,section,article,header) { min-width:0; }
 .doctor-profile-experience { display:none; }
 .doctor-profile-experience strong { color:#1e6f6c; font-size:.86rem; }
 .doctor-profile-bio { grid-area:bio; margin:0; color:#425f68; font-size:.88rem; line-height:2; }
-.doctor-profile-facts { grid-area:facts; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.7rem; margin:0; }
+.doctor-profile-facts { grid-area:facts; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.7rem; margin:0; }
 .doctor-profile-facts>div { padding:.75rem .85rem; border:1px solid #dce9e6; border-radius:13px; background:#fff; }
 .doctor-profile-facts dt { display:flex; align-items:center; gap:.4rem; margin-bottom:.15rem; color:#698087; font-size:.65rem; font-weight:650; }
 .doctor-profile-facts dt svg { width:16px; height:16px; color:#31847c; }
