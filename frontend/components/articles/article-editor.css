@@ -25,5 +25,5 @@
 .confirm-dialog footer{position:relative;flex-wrap:wrap}
 .confirm-dialog footer button{min-width:125px}
 .confirm-dialog .danger-action{background:linear-gradient(145deg,#b84c4c,#943838)!important;box-shadow:0 8px 22px #9438382e}
-.confirm-dialog .secondary-action{border-color:#bfd4cf;background:#ffffffa8}
+.confirm-dialog .secondary-action{border-color:#bfd4cf;color:#172a2a!important;background:#ffffffa8}
 @media(max-width:480px){.confirm-dialog>div{padding:1.6rem 1rem 1.2rem}.confirm-dialog footer{display:grid;grid-template-columns:1fr}.confirm-dialog footer button{width:100%}}

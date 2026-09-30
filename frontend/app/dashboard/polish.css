@@ -175,6 +175,10 @@
 .dashboard-area .staff-visit-actions,.dashboard-area .visit-record-actions,.dashboard-area .patient-profile-actions { display:flex; flex-wrap:wrap; align-items:center; gap:.55rem; }
 .dashboard-area .patient-profile-actions { justify-content:flex-end; }
 .dashboard-area .staff-visit-actions .danger-text,.dashboard-area .visit-record-actions .danger-text,.dashboard-area .patient-profile-actions .danger-text { min-height:38px; padding:.45rem .7rem; border:1px solid #dfb9b9; border-radius:8px; color:#9b3e3e!important; background:#fff7f7; font-size:.72rem; }
+.dashboard-area .visit-record-actions .visit-editor { flex:0 1 auto; margin:0; border-top:0; }
+.dashboard-area .visit-record-actions .visit-editor summary { min-height:44px; margin:0; }
+.dashboard-area .visit-record-actions>.danger-text { min-height:44px; margin:0; }
+.dashboard-area .visit-record-actions .visit-editor[open] { flex-basis:100%; }
 .dashboard-area .soft-remove-error { flex-basis:100%; margin:.35rem 0 0; font-size:.7rem; }
 .dashboard-area .dashboard-state-actions { display:flex; flex-wrap:wrap; justify-content:center; gap:.75rem; margin-top:1.5rem; }
 .dashboard-area .dashboard-account-actions { display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end; gap:.65rem; }
