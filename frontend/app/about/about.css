@@ -86,36 +86,25 @@
 }
 
 .doctor-about-professor{
-  position:relative;
-  padding:1.4rem 1.45rem 1.35rem;
-  border:1px solid #dce9e8;
-  border-radius:18px;
-  background:#fff;
-  box-shadow:0 10px 26px rgba(25,79,85,.055);
-}
-
-.doctor-about-professor::before{
-  content:"";
-  position:absolute;
-  inset:1.35rem 0 auto auto;
-  width:4px;
-  height:2rem;
-  border-radius:0 5px 5px 0;
-  background:#b94b4b;
+  padding:1.25rem 1.35rem;
+  border:1px solid #e2e9e8;
+  border-radius:14px;
+  background:#fcfdfd;
 }
 
 .doctor-about-professor h2{
-  margin:0 0 .55rem;
-  color:#1d5961;
-  font-size:1.08rem;
-  line-height:1.7;
+  margin:0 0 .45rem;
+  color:#385c62;
+  font-size:1rem;
+  font-weight:400;
+  line-height:1.9;
 }
 
 .doctor-about-professor p{
   margin:0;
-  color:#617b80;
-  font-size:.95rem;
-  line-height:1.95;
+  color:#526f74;
+  font-size:1rem;
+  line-height:2;
 }
 
 .doctor-about-closing{
@@ -124,14 +113,13 @@
 }
 
 .doctor-about-final{
-  margin-top:2.2rem!important;
-  padding:1.25rem 1.5rem;
-  border-radius:16px;
-  background:#edf6f4;
-  color:#1d5961;
-  font-size:1.12rem;
-  font-weight:800;
-  text-align:center;
+  margin-top:1.5rem!important;
+  padding:0;
+  background:transparent;
+  color:inherit;
+  font-size:inherit;
+  font-weight:400;
+  text-align:right;
 }
 
 @media(max-width:760px){
@@ -146,9 +134,4 @@
   .doctor-about-copy{line-height:2.15}
   .doctor-about-professors{grid-template-columns:1fr;margin:2rem 0 2.5rem}
   .doctor-about-professor{padding:1.2rem 1.25rem}
-}
-
-@media(prefers-reduced-motion:no-preference){
-  .doctor-about-professor{transition:transform .2s ease,box-shadow .2s ease}
-  .doctor-about-professor:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(25,79,85,.09)}
 }
