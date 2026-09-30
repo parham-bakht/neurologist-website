@@ -23,7 +23,7 @@ export default async function VisitDetailsPage({params}:{params:Promise<{id:stri
     </header>
     <section className="professional-date-card">
       <div className="persian-calendar-tile"><span>{date.weekday}</span><strong>{date.day}</strong><small>{date.monthYear}</small></div>
-      <div className="appointment-essentials"><div><span className="detail-symbol">♙</span><p>{visit.status==="completed"?"پزشک ویزیت‌کننده":visit.status==="scheduled"?"پزشک ویزیت آینده":"پزشک ثبت‌شده"}<strong>{visit.doctor.full_name}</strong></p></div><div><span className="detail-symbol">◷</span><p>ساعت ویزیت<strong>{date.time}</strong></p></div><div><span className="detail-symbol">⌖</span><p>محل ویزیت<strong>{visit.address||"آدرس هنوز توسط پزشک ثبت نشده است"}</strong></p></div></div>
+      <div className="appointment-essentials"><div><span className="detail-symbol">♙</span><p>{visit.status==="completed"?"پزشک ویزیت‌کننده":visit.status==="scheduled"?"پزشک ویزیت آینده":"پزشک ثبت‌شده"}<strong>{visit.doctor?.full_name||visit.doctor_name}</strong></p></div><div><span className="detail-symbol">◷</span><p>ساعت ویزیت<strong>{date.time}</strong></p></div><div><span className="detail-symbol">⌖</span><p>محل ویزیت<strong>{visit.address||"آدرس هنوز توسط پزشک ثبت نشده است"}</strong></p></div></div>
     </section>
     <section className="visit-information-grid">
       <article><span className="info-card-icon">≡</span><div><h2>توضیحات ویزیت</h2><p>{visit.description||"توضیحی برای این ویزیت ثبت نشده است."}</p></div></article>

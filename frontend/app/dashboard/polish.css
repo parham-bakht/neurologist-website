@@ -172,7 +172,17 @@
 .dashboard-area .visit-doctor-label { display:block; color:#536d68!important; font-size:.74rem; line-height:1.8; }
 .dashboard-area .visit-doctor-label strong { color:#236d68; }
 .dashboard-area .staff-visit-open { font-size:.8rem; }
+.dashboard-area .staff-visit-actions,.dashboard-area .visit-record-actions,.dashboard-area .patient-profile-actions { display:flex; flex-wrap:wrap; align-items:center; gap:.55rem; }
+.dashboard-area .patient-profile-actions { justify-content:flex-end; }
+.dashboard-area .staff-visit-actions .danger-text,.dashboard-area .visit-record-actions .danger-text,.dashboard-area .patient-profile-actions .danger-text { min-height:38px; padding:.45rem .7rem; border:1px solid #dfb9b9; border-radius:8px; color:#9b3e3e!important; background:#fff7f7; font-size:.72rem; }
+.dashboard-area .soft-remove-error { flex-basis:100%; margin:.35rem 0 0; font-size:.7rem; }
 .dashboard-area .dashboard-state-actions { display:flex; flex-wrap:wrap; justify-content:center; gap:.75rem; margin-top:1.5rem; }
+.dashboard-area .dashboard-account-actions { display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end; gap:.65rem; }
+.dashboard-area .staff-name-editor { display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end; gap:.5rem; max-width:580px; margin:0; }
+.dashboard-area .staff-name-editor label { flex:1 1 210px; }
+.dashboard-area .staff-name-editor input { min-height:42px; }
+.dashboard-area .staff-name-editor button { min-height:42px; padding:.55rem .8rem; font-size:.75rem; }
+.dashboard-area .staff-name-editor small { flex-basis:100%; margin:0; text-align:left; font-size:.7rem; }
 .dashboard-area .dashboard-error-page h1 { font-size:1.65rem; }
 .dashboard-area .dashboard-skeleton { border-radius:12px; background:#e6efeb; }
 .dashboard-area .skeleton-heading { width:min(70%,400px); height:42px; margin:.8rem 0; }
@@ -196,13 +206,18 @@
 .dashboard-area .user-search { width:min(100%,280px); }
 .dashboard-area .user-search input { min-height:44px; }
 .dashboard-area .managed-users-list { display:grid; gap:.7rem; }
-.dashboard-area .managed-users-list article { display:grid; grid-template-columns:46px minmax(0,1fr) minmax(145px,.45fr); gap:.9rem; align-items:center; padding:1rem; border:1px solid #e1ebe8; border-radius:13px; background:#fcfefd; }
+.dashboard-area .managed-users-list article { display:grid; grid-template-columns:46px minmax(130px,.7fr) minmax(260px,1.3fr); gap:.9rem; align-items:center; padding:1rem; border:1px solid #e1ebe8; border-radius:13px; background:#fcfefd; }
 .dashboard-area .managed-user-avatar { display:grid; place-items:center; width:46px; height:46px; border-radius:13px; color:#fff; background:linear-gradient(145deg,#3e8b87,#1d5961); font-size:1.1rem; font-weight:700; }
 .dashboard-area .managed-users-list h3 { display:flex; flex-wrap:wrap; align-items:center; gap:.45rem; margin:0; font-size:.92rem; }
 .dashboard-area .managed-users-list h3 small { padding:.18rem .45rem; border:1px solid #c8e4d9; border-radius:999px; color:#246b61; background:#ebf7f2; font-size:.63rem; font-weight:700; }
 .dashboard-area .managed-users-list article>div>p { margin:.2rem 0 0; direction:ltr; text-align:right; color:#536d73; font-size:.77rem; overflow-wrap:anywhere; }
 .dashboard-area .managed-users-list article>div>span { display:block; margin-top:.15rem; color:#718580; font-size:.72rem; text-align:right; }
-.dashboard-area .managed-users-list article>label { justify-self:stretch; color:#617672; font-size:.68rem; }
+.dashboard-area .managed-user-controls { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(130px,.65fr) auto; gap:.65rem; align-items:end; }
+.dashboard-area .managed-user-controls>label { justify-self:stretch; color:#617672; font-size:.68rem; }
+.dashboard-area .managed-name-row { display:flex; gap:.4rem; }
+.dashboard-area .managed-name-row input { min-width:0; min-height:42px; }
+.dashboard-area .managed-name-row button { flex:none; min-height:42px; padding:.5rem .65rem; font-size:.68rem; }
+.dashboard-area .managed-user-remove { min-height:42px; padding:.5rem .65rem; border:1px solid #dfb9b9; border-radius:8px; background:#fff7f7; font-size:.68rem; }
 .dashboard-area .managed-users-list select { min-height:42px; padding:.55rem .75rem; font-size:.78rem; }
 .dashboard-area .managed-users-list select:disabled { cursor:not-allowed; color:#49645f; background:#edf3f1; opacity:1; }
 .dashboard-area .managed-users-list article>label small { color:#718580; font-size:.64rem; font-weight:400; }
@@ -214,6 +229,8 @@
   .dashboard-area .users-management-layout { grid-template-columns:1fr; height:auto; min-height:0; max-height:none; overflow:visible; }
   .dashboard-area :where(.user-create-card,.users-list-card) { height:auto; overflow:visible; overscroll-behavior:auto; scrollbar-gutter:auto; }
   .dashboard-area .user-create-card { position:static; }
+  .dashboard-area .managed-users-list article { grid-template-columns:46px minmax(0,1fr); }
+  .dashboard-area .managed-user-controls { grid-column:1/-1; }
 }
 @media(max-width:700px) {
   .request-detail-dialog { width:calc(100vw - 1rem); max-height:calc(100vh - 1rem); border-radius:14px; }
@@ -224,10 +241,12 @@
   .dashboard-area .dashboard-header,.dashboard-area .patient-welcome { flex-direction:column; align-items:stretch; gap:1rem; margin-bottom:1.5rem; }
   .dashboard-area .dashboard-header h1,.dashboard-area .subpage-header h1,.dashboard-area .patient-welcome h1,.dashboard-area .visit-detail-hero h1 { font-size:1.7rem; line-height:1.7; }
   .dashboard-area :where(.muted) { font-size:.85rem; }
+  .dashboard-area .dashboard-account-actions { justify-content:flex-start; }
   .dashboard-area .dashboard-logout { align-self:flex-start; }
   .dashboard-area .dashboard-logout button,.dashboard-area .patient-welcome button { padding:.6rem .85rem; font-size:.78rem; }
   .dashboard-area .patient-welcome form { align-self:flex-start; width:auto; }
   .dashboard-area .dashboard-menu { grid-template-columns:1fr; gap:.85rem; }
+  .dashboard-area .managed-user-controls { grid-template-columns:1fr; }
   .dashboard-area .dashboard-menu-card { display:grid; grid-template-columns:42px minmax(0,1fr); gap:.8rem 1rem; min-height:0; padding:1.15rem; }
   .dashboard-area .dashboard-menu-card .menu-icon { width:42px; height:42px; border-radius:12px; }
   .dashboard-area .dashboard-menu-card h2 { font-size:1.06rem; }

@@ -3,6 +3,7 @@ import {requireDashboardUser} from "./auth";
 import PatientDashboard from "./patient-dashboard";
 import type {Visit} from "./types";
 import DashboardIcon from "./dashboard-icon";
+import StaffNameEditor from "./staff-name-editor";
 
 export default async function Dashboard(){
   const {user,headers}=await requireDashboardUser();
@@ -12,7 +13,7 @@ export default async function Dashboard(){
     return <PatientDashboard user={user} visits={visits} loadError={!response.ok}/>;
   }
   return <main className="dashboard-home">
-    <header className="dashboard-header"><div><p className="eyebrow">پنل {user.role==="admin"?"مدیریت":"پزشک"}</p><h1>امروز چه کاری انجام می‌دهید؟</h1><p className="muted">برای ورود به هر بخش، کارت مربوط به آن را انتخاب کنید.</p></div><form className="dashboard-logout" action="/api/auth/logout" method="post"><button className="secondary">خروج از حساب</button></form></header>
+    <header className="dashboard-header"><div><p className="eyebrow">پنل {user.role==="admin"?"مدیریت":"پزشک"}</p><h1>{user.full_name}</h1><p className="muted">امروز چه کاری انجام می‌دهید؟</p></div><div className="dashboard-account-actions"><StaffNameEditor initialName={user.full_name}/><form className="dashboard-logout" action="/api/auth/logout" method="post"><button className="secondary">خروج از حساب</button></form></div></header>
     <section className="dashboard-menu" aria-label="بخش‌های پنل">
       <Link href="/dashboard/patients" className="dashboard-menu-card"><span className="menu-icon"><DashboardIcon name="patient"/></span><div><p className="eyebrow">بیماران</p><h2>پرونده بیماران</h2><p>پروفایل، آخرین شرح ویزیت و داروهای تجویزشده هر بیمار را ببینید.</p></div><strong>مشاهده پرونده‌ها ←</strong></Link>
       <Link href="/dashboard/visits" className="dashboard-menu-card"><span className="menu-icon"><DashboardIcon name="calendar"/></span><div><p className="eyebrow">مدیریت ویزیت</p><h2>همه ویزیت‌ها</h2><p>ویزیت‌ها را براساس نام بیمار و تاریخ جست‌وجو، فیلتر و مرتب کنید.</p></div><strong>مشاهده ویزیت‌ها ←</strong></Link>

@@ -132,7 +132,8 @@ class Visit(Base):
     __tablename__ = "visits"
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     patient_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
-    doctor_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="RESTRICT"), index=True)
+    doctor_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"), index=True, nullable=True)
+    doctor_name: Mapped[str] = mapped_column(String(120), default="", server_default="")
     scheduled_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
     status: Mapped[VisitStatus] = mapped_column(
         Enum(VisitStatus, values_callable=lambda statuses: [status.value for status in statuses]),
@@ -142,7 +143,8 @@ class Visit(Base):
     description: Mapped[str] = mapped_column(Text, default="")
     medications: Mapped[str] = mapped_column(Text, default="")
     address: Mapped[str] = mapped_column(String(500), default="")
+    is_deleted: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false", index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
     patient: Mapped[User] = relationship(foreign_keys=[patient_id])
-    doctor: Mapped[User] = relationship(foreign_keys=[doctor_id])
+    doctor: Mapped[User | None] = relationship(foreign_keys=[doctor_id])

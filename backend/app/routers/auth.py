@@ -4,8 +4,8 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
 from app.dependencies import get_current_user
-from app.models import User
-from app.schemas import LoginRequest, RegisterRequest, TokenResponse, UserResponse
+from app.models import User, UserRole
+from app.schemas import LoginRequest, RegisterRequest, TokenResponse, UserNameUpdate, UserResponse
 from app.security import create_access_token, hash_password, verify_password
 
 router = APIRouter(prefix="/auth", tags=["authentication"])
@@ -31,5 +31,19 @@ async def login(data: LoginRequest, db: AsyncSession = Depends(get_db)):
 
 @router.get("/me", response_model=UserResponse)
 async def me(user: User = Depends(get_current_user)):
+    return user
+
+
+@router.patch("/me", response_model=UserResponse)
+async def update_my_name(
+    data: UserNameUpdate,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    if user.role not in (UserRole.DOCTOR, UserRole.ADMIN):
+        raise HTTPException(status_code=403, detail="Only staff accounts can update their name here")
+    user.full_name = data.full_name
+    await db.commit()
+    await db.refresh(user)
     return user
 

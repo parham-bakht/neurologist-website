@@ -1,19 +1,19 @@
 import uuid
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
 from app.dependencies import require_roles
 from app.models import User, UserRole
-from app.schemas import AdminUserCreate, RoleUpdate, UserResponse
+from app.schemas import AdminUserCreate, RoleUpdate, UserNameUpdate, UserResponse
 from app.security import hash_password
 
 router = APIRouter(prefix="/admin", tags=["admin"], dependencies=[Depends(require_roles(UserRole.ADMIN))])
 
 @router.get("/users", response_model=list[UserResponse])
 async def list_users(db: AsyncSession = Depends(get_db)):
-    return (await db.scalars(select(User).order_by(User.created_at.desc()))).all()
+    return (await db.scalars(select(User).where(User.is_active.is_(True)).order_by(User.created_at.desc()))).all()
 
 
 @router.post("/users", response_model=UserResponse, status_code=201)
@@ -39,3 +39,26 @@ async def update_role(user_id: uuid.UUID, data: RoleUpdate, db: AsyncSession = D
     await db.commit()
     await db.refresh(user)
     return user
+
+
+@router.patch("/users/{user_id}", response_model=UserResponse)
+async def update_user_name(user_id: uuid.UUID, data: UserNameUpdate, db: AsyncSession = Depends(get_db)):
+    user = await db.get(User, user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    user.full_name = data.full_name
+    await db.commit()
+    await db.refresh(user)
+    return user
+
+
+@router.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def remove_user(user_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
+    user = await db.get(User, user_id)
+    if not user or not user.is_active:
+        raise HTTPException(status_code=404, detail="User not found")
+    if user.is_superuser:
+        raise HTTPException(status_code=409, detail="The main manager account cannot be removed")
+    user.is_active = False
+    await db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

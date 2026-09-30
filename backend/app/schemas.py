@@ -42,6 +42,18 @@ class RoleUpdate(BaseModel):
     role: UserRole
 
 
+class UserNameUpdate(BaseModel):
+    full_name: str = Field(min_length=2, max_length=120)
+
+    @field_validator("full_name")
+    @classmethod
+    def name_must_not_be_blank(cls, value: str) -> str:
+        value = value.strip()
+        if len(value) < 2:
+            raise ValueError("Full name must contain at least 2 characters")
+        return value
+
+
 class AdminUserCreate(RegisterRequest):
     phone: str | None = Field(default=None, min_length=7, max_length=20, pattern=r"^\+?[0-9۰-۹٠-٩()\-\s]{7,20}$")
     role: UserRole = UserRole.USER
@@ -259,7 +271,8 @@ class PatientListVisit(BaseModel):
     id: uuid.UUID
     scheduled_at: datetime
     status: VisitStatus
-    doctor: VisitDoctor
+    doctor_name: str
+    doctor: VisitDoctor | None
 
 
 class PatientListResponse(UserResponse):
@@ -285,7 +298,8 @@ class VisitResponse(BaseModel):
     address: str
     created_at: datetime
     updated_at: datetime
-    doctor: VisitDoctor
+    doctor_name: str
+    doctor: VisitDoctor | None
     patient: VisitPatient
 
 class PatientDetailResponse(PatientResponse):

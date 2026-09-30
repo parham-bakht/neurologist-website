@@ -1,6 +1,13 @@
+import asyncio
+import uuid
+from types import SimpleNamespace
+
 from fastapi.testclient import TestClient
 
+from app.dependencies import get_current_user
 from app.main import app
+from app.models import UserRole
+from app.routers.visits import remove_visit
 
 
 def test_patient_visit_history_requires_authentication() -> None:
@@ -37,3 +44,39 @@ def test_editing_visit_requires_staff_authentication() -> None:
         },
     )
     assert response.status_code == 401
+
+
+def test_removing_visit_requires_staff_authentication() -> None:
+    response = TestClient(app).delete("/api/v1/visits/00000000-0000-0000-0000-000000000000")
+    assert response.status_code == 401
+
+
+def test_patient_cannot_remove_visit() -> None:
+    app.dependency_overrides[get_current_user] = lambda: SimpleNamespace(role=UserRole.USER)
+    try:
+        response = TestClient(app).delete("/api/v1/visits/00000000-0000-0000-0000-000000000000")
+        assert response.status_code == 403
+    finally:
+        app.dependency_overrides.clear()
+
+
+def test_removing_visit_marks_it_deleted_without_erasing_it() -> None:
+    visit = SimpleNamespace(
+        id=uuid.UUID("00000000-0000-0000-0000-000000000004"),
+        is_deleted=False,
+    )
+
+    class FakeSession:
+        committed = False
+
+        async def scalar(self, _query):
+            return visit
+
+        async def commit(self):
+            self.committed = True
+
+    session = FakeSession()
+    response = asyncio.run(remove_visit(visit.id, SimpleNamespace(), session))
+    assert response.status_code == 204
+    assert visit.is_deleted is True
+    assert session.committed is True

@@ -10,7 +10,7 @@ from pydantic import ValidationError
 from app.dependencies import get_current_user
 from app.main import app
 from app.models import UserRole
-from app.routers.patients import normalize_iranian_mobile, update_patient_additional_notes
+from app.routers.patients import normalize_iranian_mobile, remove_patient, update_patient_additional_notes
 from app.schemas import PatientAdditionalNotesUpdate, PatientCreateRequest
 
 
@@ -25,6 +25,45 @@ def test_patient_creation_requires_staff_authentication() -> None:
         },
     )
     assert response.status_code == 401
+
+
+def test_removing_patient_requires_staff_authentication() -> None:
+    response = TestClient(app).delete("/api/v1/patients/00000000-0000-0000-0000-000000000000")
+    assert response.status_code == 401
+
+
+def test_regular_user_cannot_remove_patient() -> None:
+    app.dependency_overrides[get_current_user] = lambda: SimpleNamespace(role=UserRole.USER)
+    try:
+        response = TestClient(app).delete("/api/v1/patients/00000000-0000-0000-0000-000000000000")
+        assert response.status_code == 403
+    finally:
+        app.dependency_overrides.clear()
+
+
+def test_removing_patient_deactivates_instead_of_deleting() -> None:
+    patient = SimpleNamespace(is_active=True)
+
+    class FakeSession:
+        committed = False
+
+        async def scalar(self, _query):
+            return patient
+
+        async def commit(self):
+            self.committed = True
+
+    session = FakeSession()
+    response = asyncio.run(
+        remove_patient(
+            patient_id=uuid.UUID("00000000-0000-0000-0000-000000000005"),
+            _staff=SimpleNamespace(role=UserRole.DOCTOR),
+            db=session,
+        )
+    )
+    assert response.status_code == 204
+    assert patient.is_active is False
+    assert session.committed is True
 
 
 def test_iranian_mobile_numbers_are_normalized() -> None:

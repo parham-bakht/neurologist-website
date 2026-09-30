@@ -3,6 +3,7 @@ import {requireDashboardUser} from "../auth";
 import PersianCalendarField from "../persian-calendar-field";
 import {formatPersianDate,visitStatusLabel} from "../persian-date";
 import type {Visit} from "../types";
+import SoftRemoveButton from "../soft-remove-button";
 
 type SearchParams={patient_name?:string;visit_on?:string;sort?:"asc"|"desc"};
 
@@ -11,7 +12,7 @@ function PatientVisits({visits,responseOk}:{visits:Visit[];responseOk:boolean}){
     <Link className="back-link" href="/dashboard">← بازگشت به پنل</Link>
     <header className="subpage-header"><p className="eyebrow">سوابق پزشکی</p><h1>ویزیت‌های من</h1><p className="muted">هر ویزیت را انتخاب کنید تا زمان، محل و اطلاعات ثبت‌شده آن را ببینید.</p></header>
     {!responseOk&&<p className="error" role="alert">دریافت ویزیت‌ها انجام نشد. لطفاً صفحه را دوباره بارگذاری کنید.</p>}
-    {responseOk&&(visits.length===0?<section className="empty-state patient-list-empty"><span aria-hidden="true">◷</span><h2>هنوز ویزیتی ثبت نشده است</h2><p className="muted">پس از ثبت ویزیت توسط پزشک، سابقه آن در این بخش نمایش داده می‌شود.</p></section>:<section className="patient-visit-links">{visits.map(visit=><Link href={`/dashboard/visits/${visit.id}`} className="patient-visit-link" key={visit.id}><span className="visit-link-icon" aria-hidden="true">◷</span><div><time>{formatPersianDate(visit.scheduled_at)}</time><p>{visit.status==="completed"?"پزشک ویزیت‌کننده":visit.status==="scheduled"?"پزشک ویزیت آینده":"پزشک ثبت‌شده"}: <strong>{visit.doctor.full_name}</strong>{visit.address?` · ${visit.address}`:""}</p></div><span className={`visit-status ${visit.status}`}>{visitStatusLabel[visit.status]}</span><b aria-hidden="true">←</b></Link>)}</section>)}
+    {responseOk&&(visits.length===0?<section className="empty-state patient-list-empty"><span aria-hidden="true">◷</span><h2>هنوز ویزیتی ثبت نشده است</h2><p className="muted">پس از ثبت ویزیت توسط پزشک، سابقه آن در این بخش نمایش داده می‌شود.</p></section>:<section className="patient-visit-links">{visits.map(visit=><Link href={`/dashboard/visits/${visit.id}`} className="patient-visit-link" key={visit.id}><span className="visit-link-icon" aria-hidden="true">◷</span><div><time>{formatPersianDate(visit.scheduled_at)}</time><p>{visit.status==="completed"?"پزشک ویزیت‌کننده":visit.status==="scheduled"?"پزشک ویزیت آینده":"پزشک ثبت‌شده"}: <strong>{visit.doctor?.full_name||visit.doctor_name}</strong>{visit.address?` · ${visit.address}`:""}</p></div><span className={`visit-status ${visit.status}`}>{visitStatusLabel[visit.status]}</span><b aria-hidden="true">←</b></Link>)}</section>)}
   </main>;
 }
 
@@ -31,8 +32,8 @@ function StaffVisits({visits,responseOk,filters}:{visits:Visit[];responseOk:bool
       <div className="staff-visit-person"><span>{visit.patient.full_name.trim().charAt(0)}</span><div><h2>{visit.patient.full_name}</h2><a href={visit.patient.phone?`tel:${visit.patient.phone}`:`mailto:${visit.patient.email}`} dir="ltr">{visit.patient.phone||visit.patient.email}</a></div></div>
       <div className="staff-visit-date"><small>تاریخ ویزیت</small><time>{formatPersianDate(visit.scheduled_at)}</time></div>
       <span className={`visit-status ${visit.status}`}>{visitStatusLabel[visit.status]}</span>
-      <div className="staff-visit-summary"><strong className="staff-visit-doctor">{visit.status==="completed"?"پزشک ویزیت‌کننده":visit.status==="scheduled"?"پزشک ویزیت آینده":"پزشک ثبت‌شده"}: {visit.doctor.full_name}</strong><p>{visit.description||"برای این ویزیت شرحی ثبت نشده است."}</p>{visit.address&&<small>⌖ {visit.address}</small>}</div>
-      <Link className="button secondary staff-visit-open" href={`/dashboard/patients/${visit.patient_id}`}>مشاهده و ویرایش پرونده ←</Link>
+      <div className="staff-visit-summary"><strong className="staff-visit-doctor">{visit.status==="completed"?"پزشک ویزیت‌کننده":visit.status==="scheduled"?"پزشک ویزیت آینده":"پزشک ثبت‌شده"}: {visit.doctor?.full_name||visit.doctor_name}</strong><p>{visit.description||"برای این ویزیت شرحی ثبت نشده است."}</p>{visit.address&&<small>⌖ {visit.address}</small>}</div>
+      <div className="staff-visit-actions"><Link className="button secondary staff-visit-open" href={`/dashboard/patients/${visit.patient_id}`}>مشاهده و ویرایش پرونده ←</Link><SoftRemoveButton endpoint={`/api/visits/${visit.id}`} label="حذف ویزیت" title="ویزیت از فهرست حذف شود؟" description="این ویزیت دیگر در پنل نمایش داده نمی‌شود، اما اطلاعات آن برای حفظ سوابق در پایگاه داده باقی می‌ماند."/></div>
     </article>)}</section>)}
   </main>;
 }

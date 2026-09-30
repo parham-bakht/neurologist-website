@@ -26,7 +26,7 @@ export default function PatientDashboard({user,visits,loadError=false}:{user:Use
       </Link>
       {nextVisit&&nextDate&&<Link className="patient-overview-card upcoming-overview-card" href={`/dashboard/visits/${nextVisit.id}`}>
         <span className="overview-icon"><DashboardIcon name="calendar"/></span>
-        <div><p className="eyebrow">قرار پیش رو</p><h2>ویزیت بعدی</h2><div className="overview-date"><strong>{nextDate.day}</strong><span>{nextDate.monthYear}<small>{nextDate.weekday}، ساعت {nextDate.time}</small></span></div><p>پزشک ویزیت آینده: <strong>{nextVisit.doctor.full_name}</strong></p></div>
+        <div><p className="eyebrow">قرار پیش رو</p><h2>ویزیت بعدی</h2><div className="overview-date"><strong>{nextDate.day}</strong><span>{nextDate.monthYear}<small>{nextDate.weekday}، ساعت {nextDate.time}</small></span></div><p>پزشک ویزیت آینده: <strong>{nextVisit.doctor?.full_name||nextVisit.doctor_name}</strong></p></div>
         <div className="overview-card-footer"><span>{nextVisit.address||"آدرس هنوز ثبت نشده است"}</span><b>جزئیات ویزیت ←</b></div>
       </Link>}
     </section>}

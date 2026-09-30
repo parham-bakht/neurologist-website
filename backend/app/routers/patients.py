@@ -1,7 +1,7 @@
 import uuid
 import re
 from datetime import datetime, timezone
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy import and_, or_, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -43,7 +43,7 @@ async def list_patients(
     _staff: User = Depends(require_roles(UserRole.DOCTOR, UserRole.ADMIN)),
     db: AsyncSession = Depends(get_db),
 ):
-    query = select(User).where(User.role == UserRole.USER)
+    query = select(User).where(User.role == UserRole.USER, User.is_active.is_(True))
     if name and (value := name.strip()):
         query = query.where(User.full_name.ilike(f"%{value}%"))
     patients = list((await db.scalars(query.order_by(User.full_name))).all())
@@ -55,6 +55,7 @@ async def list_patients(
         select(Visit)
         .where(
             Visit.patient_id.in_([patient.id for patient in patients]),
+            Visit.is_deleted.is_(False),
             or_(
                 and_(Visit.status == VisitStatus.SCHEDULED, Visit.scheduled_at >= now),
                 Visit.status == VisitStatus.COMPLETED,
@@ -90,13 +91,13 @@ async def get_patient(
     _staff: User = Depends(require_roles(UserRole.DOCTOR, UserRole.ADMIN)),
     db: AsyncSession = Depends(get_db),
 ):
-    query = select(User).where(User.id == patient_id, User.role == UserRole.USER)
+    query = select(User).where(User.id == patient_id, User.role == UserRole.USER, User.is_active.is_(True))
     patient = await db.scalar(query)
     if not patient:
         raise HTTPException(404, "Patient not found")
     visits_query = (
         select(Visit)
-        .where(Visit.patient_id == patient.id)
+        .where(Visit.patient_id == patient.id, Visit.is_deleted.is_(False))
         .options(selectinload(Visit.doctor), selectinload(Visit.patient))
         .order_by(Visit.scheduled_at.desc())
     )
@@ -114,7 +115,7 @@ async def update_patient_additional_notes(
     _staff: User = Depends(require_roles(UserRole.DOCTOR, UserRole.ADMIN)),
     db: AsyncSession = Depends(get_db),
 ):
-    query = select(User).where(User.id == patient_id, User.role == UserRole.USER)
+    query = select(User).where(User.id == patient_id, User.role == UserRole.USER, User.is_active.is_(True))
     patient = await db.scalar(query)
     if not patient:
         raise HTTPException(404, "Patient not found")
@@ -122,6 +123,22 @@ async def update_patient_additional_notes(
     await db.commit()
     await db.refresh(patient)
     return patient
+
+
+@router.delete("/{patient_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def remove_patient(
+    patient_id: uuid.UUID,
+    _staff: User = Depends(require_roles(UserRole.DOCTOR, UserRole.ADMIN)),
+    db: AsyncSession = Depends(get_db),
+):
+    patient = await db.scalar(
+        select(User).where(User.id == patient_id, User.role == UserRole.USER, User.is_active.is_(True))
+    )
+    if not patient:
+        raise HTTPException(404, "Patient not found")
+    patient.is_active = False
+    await db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 @router.post("", response_model=UserResponse, status_code=201)

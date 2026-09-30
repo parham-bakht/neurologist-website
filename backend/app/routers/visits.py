@@ -2,7 +2,7 @@ import uuid
 from datetime import date, datetime, time, timedelta, timezone
 from zoneinfo import ZoneInfo
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -37,7 +37,7 @@ async def my_visits(
         raise HTTPException(403, "This endpoint is for patient accounts")
     query = (
         select(Visit)
-        .where(Visit.patient_id == user.id)
+        .where(Visit.patient_id == user.id, Visit.is_deleted.is_(False))
         .options(selectinload(Visit.doctor), selectinload(Visit.patient))
         .order_by(Visit.scheduled_at.desc())
     )
@@ -52,7 +52,11 @@ async def list_visits(
     _staff: User = Depends(require_roles(UserRole.DOCTOR, UserRole.ADMIN)),
     db: AsyncSession = Depends(get_db),
 ):
-    query = select(Visit).join(User, Visit.patient_id == User.id)
+    query = (
+        select(Visit)
+        .join(User, Visit.patient_id == User.id)
+        .where(Visit.is_deleted.is_(False), User.is_active.is_(True))
+    )
     if patient_name and (value := patient_name.strip()):
         query = query.where(User.full_name.ilike(f"%{value}%"))
     if visit_on:
@@ -73,9 +77,9 @@ async def create_visit(
     db: AsyncSession = Depends(get_db),
 ):
     patient = await db.get(User, patient_id)
-    if not patient or patient.role != UserRole.USER:
+    if not patient or patient.role != UserRole.USER or not patient.is_active:
         raise HTTPException(404, "Patient not found")
-    visit = Visit(patient_id=patient.id, doctor_id=staff.id, **normalize_visit(data))
+    visit = Visit(patient_id=patient.id, doctor_id=staff.id, doctor_name=staff.full_name, **normalize_visit(data))
     db.add(visit)
     await db.commit()
     query = select(Visit).where(Visit.id == visit.id).options(selectinload(Visit.doctor), selectinload(Visit.patient))
@@ -89,7 +93,7 @@ async def update_visit(
     _staff: User = Depends(require_roles(UserRole.DOCTOR, UserRole.ADMIN)),
     db: AsyncSession = Depends(get_db),
 ):
-    visit = await db.get(Visit, visit_id)
+    visit = await db.scalar(select(Visit).where(Visit.id == visit_id, Visit.is_deleted.is_(False)))
     if not visit:
         raise HTTPException(404, "Visit not found")
     for field, value in normalize_visit(data).items():
@@ -97,3 +101,17 @@ async def update_visit(
     await db.commit()
     query = select(Visit).where(Visit.id == visit.id).options(selectinload(Visit.doctor), selectinload(Visit.patient))
     return await db.scalar(query)
+
+
+@router.delete("/visits/{visit_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def remove_visit(
+    visit_id: uuid.UUID,
+    _staff: User = Depends(require_roles(UserRole.DOCTOR, UserRole.ADMIN)),
+    db: AsyncSession = Depends(get_db),
+):
+    visit = await db.scalar(select(Visit).where(Visit.id == visit_id, Visit.is_deleted.is_(False)))
+    if not visit:
+        raise HTTPException(404, "Visit not found")
+    visit.is_deleted = True
+    await db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
