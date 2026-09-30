@@ -1,0 +1,9 @@
+[Unit]
+Description=Renew the pedneuro.ir Let's Encrypt certificate
+Requires=docker.service
+After=docker.service network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/docker run --rm --name pedneuro-certbot-renew -v /opt/neurologist-website/certbot/www:/var/www/certbot:Z -v /etc/letsencrypt:/etc/letsencrypt:Z certbot/certbot:latest renew --webroot --webroot-path /var/www/certbot --quiet
+ExecStartPost=/usr/bin/docker exec neurologist-website-nginx-1 nginx -s reload

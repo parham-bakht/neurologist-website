@@ -442,7 +442,7 @@ html { scroll-behavior:smooth; }
 .hero-trust span { display:flex; align-items:center; gap:.35rem; color:#425e70; font-size:.74rem; font-weight:650; }
 .hero-trust svg { width:16px; height:16px; color:#3c8c7f; }
 .premium-hero-visual { width:100%; max-width:470px; justify-self:end; }
-.hero-logo-showcase { position:relative; width:100%; aspect-ratio:1; display:grid; place-items:center; overflow:hidden; border:1px solid #d4e5e8; border-radius:50%; background:radial-gradient(circle at 50% 45%,#fff 0 32%,#eaf6f4 33% 68%,#f6fafb 69%); box-shadow:0 30px 75px #17324d13,inset 0 0 0 18px #ffffff72; }
+.hero-logo-showcase { position:relative; width:100%; aspect-ratio:1; display:grid; place-items:center; overflow:hidden; border:1px solid #d4e5e8; border-radius:50%; background:radial-gradient(circle at 50% 45%,#fff 0 40%,#eaf6f4 41% 48%,#f6fafb 49%); box-shadow:0 30px 75px #17324d13,inset 0 0 0 18px #ffffff72; }
 .hero-logo-showcase::before,.hero-logo-showcase::after { content:""; position:absolute; border:1px solid #3f8e941c; border-radius:50%; }
 .hero-logo-showcase::before { inset:8%; }
 .hero-logo-showcase::after { inset:19%; border-style:dashed; }

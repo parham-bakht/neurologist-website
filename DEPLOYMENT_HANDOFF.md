@@ -53,30 +53,38 @@ SELinux-compatible labels were also added to the Nginx bind mounts because AlmaL
 
 ## 3. Current production status
 
-The website is currently reachable over HTTP at:
+The website is available at:
+
+```text
+https://pedneuro.ir
+```
+
+Plain HTTP requests for the domain are redirected to HTTPS. Direct HTTP access
+to the server IP remains available for troubleshooting:
 
 ```text
 http://188.212.96.214
 ```
 
-The configured domain is:
+ArvanCloud provides the public CDN edge certificate. Nginx on the VPS also has
+a Let's Encrypt origin certificate for both `pedneuro.ir` and
+`www.pedneuro.ir`, so the CDN-to-origin connection uses HTTPS instead of
+failing with a 502 response.
+
+The active Nginx HTTPS configuration is intentionally ignored by Git because
+it contains production-specific certificate paths:
 
 ```text
-pedneuro.ir
+/opt/neurologist-website/nginx/conf.d/10-app-https.conf
 ```
 
-At deployment time, `pedneuro.ir` returned `NXDOMAIN`. This means public DNS did not yet have an active record for the domain. HTTPS cannot be issued until DNS works.
+The certificate is renewed automatically by a systemd timer. Its reusable unit
+files are stored in `deploy/pedneuro-cert-renew.service` and
+`deploy/pedneuro-cert-renew.timer`. Check it with:
 
-Create these records at the domain's DNS provider:
-
-| Type | Name | Value |
-| --- | --- | --- |
-| `A` | `@` | `188.212.96.214` |
-| `A` | `www` | `188.212.96.214` |
-
-The `www` record is optional, but if it is omitted, `www.pedneuro.ir` should also be removed from the production configuration before requesting a certificate.
-
-After DNS resolves, finish the Let's Encrypt setup described in `DEPLOYMENT.md`.
+```bash
+systemctl status pedneuro-cert-renew.timer
+```
 
 ## 4. Where secrets are stored
 
